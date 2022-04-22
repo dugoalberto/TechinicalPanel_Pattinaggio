@@ -38,7 +38,6 @@ record ElementScoreRow(Optional<Float> bv, Optional<Float>[] goes, boolean revie
 //finale status of the row
   public ElementScore status() {
     if (review) return ElementScore.Review;
-
     boolean done = bv.isPresent() && Arrays.stream(goes).allMatch(Optional::isPresent);
     if (done) {
       var score = ScoreBoard.trimmedAverage(goes);
@@ -96,7 +95,6 @@ record CurrentResult(String elements, float total) {
       }
       sum += row.getValue().partial();
     }
-
     return new CurrentResult(String.valueOf(res), sum);
   }
 }
@@ -158,28 +156,23 @@ public class ScoreBoard implements Runnable {
       while (!stop) {
         Vote vt = votes.poll(1, TimeUnit.SECONDS);
         if (vt != null) {
-          System.out.println("vt =  " +vt.toString());
-          if (vt instanceof BaseValue bv)
+          if (vt instanceof BaseValue bv){
             map.compute(
                 bv.element(),
                 (k, v) ->
                     (v == null)
                         ? new ElementScoreRow(Optional.of(bv.value()), init(), false)
-                        : v.add(bv));
-          else if (vt instanceof GradeOfExecution goe)
-            map.compute(
-                goe.element(),
-                (k, v) ->
-                    (v == null)
+                        : v.add(bv));}
+          else if (vt instanceof GradeOfExecution goe){
+            map.compute(goe.element(), (k, v) -> (v == null)
                         ? new ElementScoreRow(Optional.empty(), init(), false).add(goe)
-                        : v.add(goe));
+                        : v.add(goe));}
           else if (vt instanceof SkatingSkills ss) map.compute(SKILLS, (k, v) -> v.add(ss));
           else if (vt instanceof Transitions tr) map.compute(TRANSITIONS, (k, v) -> v.add(tr));
           else if (vt instanceof Performance pf) map.compute(PERFORMANCE, (k, v) -> v.add(pf));
           else if (vt instanceof Composition cp) map.compute(COMPOSITION, (k, v) -> v.add(cp));
           else if (vt instanceof Interpretation in) map.compute(INTERPRETATION, (k, v) -> v.add(in));
           result.set(CurrentResult.calc(map.entrySet()));
-
         }
       }
     } catch (InterruptedException e) {

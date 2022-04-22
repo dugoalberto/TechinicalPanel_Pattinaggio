@@ -3,7 +3,6 @@ package Provavsc;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,7 +42,6 @@ public class Main {
 
     // set up the rink video system and vote collection
     VideoSystem video = new VideoSystem(rink);
-    video.screen();
     var votes = new LinkedBlockingQueue<Vote>();// TODO deve essere una LinkedBlockingQueue
 
     // set up the judges and technical panel
@@ -53,7 +51,6 @@ public class Main {
             .map(n -> new Judge(n, jidx.incrementAndGet(), video.screen(), votes))
             .toList();
     var techPanel = new TechnicalPanel(video.screen(), votes);
-
     // set up the score board
     var score = new ScoreBoard(votes);
 
@@ -62,24 +59,23 @@ public class Main {
 
     // start the athlete, the judges, the technical panel and the scoring board
     // TODO: start what needs to be started
+    hanyuYusuru.start();
     for (Judge judge : judges) {
       judge.start();
     }
-    System.out.println("startati i judidi");
     video.start();
-    score.start();
     techPanel.start();
-    hanyuYusuru.start();
+    score.start();
     printer.start();
-    
+
     // check if exercise and scoring is over
     do {
       Thread.sleep(5000);
     } while (!hanyuYusuru.done() && !video.done() && !techPanel.done()); // check if relevant components have stopped);
-    
+
     // TODO: stop components that don't stop themselves
     printer.stop();
     score.stop();
-    //Runtime.getRuntime().halt(1);
+    System.exit(0);
   }
 }

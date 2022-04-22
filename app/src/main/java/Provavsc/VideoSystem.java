@@ -24,13 +24,12 @@ public class VideoSystem {
     record = new Thread(() -> {
               String lastElement = "";
               try {
-                do {
+                do{ 
                   // TODO: Take one element. Send it to all screens.
+                  var elemento = rink.take();
                   for (BlockingQueue<Element> screen : screens) {
-                    screen.add(rink.take());
-                    //System.out.println(screen.peek().toString());
+                      screen.add(elemento);
                   }
-                  System.out.println("im here");
                 } while (!Element.END.equals(lastElement));
               } catch (InterruptedException e) {
                 e.printStackTrace();

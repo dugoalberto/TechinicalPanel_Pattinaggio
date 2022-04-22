@@ -32,7 +32,6 @@ public class TechnicalPanel implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("dentro run");
     Random rnd = new Random();
     String lastElement;
     int idx = 0;
@@ -43,7 +42,6 @@ public class TechnicalPanel implements Runnable {
       do {        
         Element e = screen.take();
         lastElement = e.element();
-                
         if (!Element.END.equals(e.element()) && idx < baseValues.length) {
           Vote vote = new BaseValue(e, baseValues[idx++]);
           values.put(vote);

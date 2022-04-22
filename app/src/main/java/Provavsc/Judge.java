@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
+import javax.sound.midi.VoiceStatus;
+
 /**
  * A judge examines the athlete on the screen and emits votes.
  *
@@ -55,7 +57,6 @@ public class Judge implements Runnable {
       do {
         Element e = screen.take();
         lastElement = e.element();
-        //if is not the end, the last element, do a rewiew
         if (!Element.END.equals(e.element())) {
           boolean review = nation.review.contains(e.idx());
           Vote vote = new GradeOfExecution(e, this, nation.goes.get(e.idx() - 1).floatValue(), review);

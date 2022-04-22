@@ -8,7 +8,6 @@ import java.util.concurrent.BlockingQueue;
 class Athlete {
 
   private final Thread execution;
-// an athlete is a thread who puts into a rink(pista di pattinaggio) an element(program)
   Athlete(final BlockingQueue<Element> rink, final List<Element> program) {
     final Random rnd = new Random();
     this.execution =
@@ -19,7 +18,6 @@ class Athlete {
                   rink.put(e);
                   Thread.sleep(rnd.nextInt(3000));
                 }
-                //here add a new element, called end, in this way we "finished" the thread
                 rink.put(new Element(program.size() + 1, Element.END));
 
               } catch (InterruptedException e) {
