@@ -65,7 +65,6 @@ public class Judge implements Runnable {
             // save reviews for later
             reviews.add(vote);
         }
-
         Thread.sleep(rnd.nextInt(1500));
       } while (!Element.END.equals(lastElement)); // do it until it is the last element
 

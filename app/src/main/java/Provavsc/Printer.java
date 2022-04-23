@@ -23,7 +23,6 @@ public class Printer implements Runnable {
           System.out.println(ScoreBoard.format(score.result.get().elements(),score.result.get().total()));
         }
         Thread.sleep(1000);
-
       }
     } catch (InterruptedException ex) {
       ex.printStackTrace();

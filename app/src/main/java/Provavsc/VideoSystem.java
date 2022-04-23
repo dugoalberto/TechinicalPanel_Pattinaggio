@@ -30,6 +30,7 @@ public class VideoSystem {
                   for (BlockingQueue<Element> screen : screens) {
                       screen.add(elemento);
                   }
+                  lastElement = elemento.element();
                 } while (!Element.END.equals(lastElement));
               } catch (InterruptedException e) {
                 e.printStackTrace();
